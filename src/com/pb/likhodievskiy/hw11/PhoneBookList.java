@@ -1,7 +1,6 @@
 package com.pb.likhodievskiy.hw11;
 
 import java.io.*;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -66,8 +65,7 @@ public class PhoneBookList implements Serializable {
     }
 
     public void writeToFile(String fileName) throws IOException {
-        File file = Paths.get(fileName).toFile();
-        FileOutputStream outputStream = new FileOutputStream(file);
+        FileOutputStream outputStream = new FileOutputStream(fileName);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         objectOutputStream.writeObject(list);
         objectOutputStream.close();
@@ -75,7 +73,10 @@ public class PhoneBookList implements Serializable {
     }
 
     public void readFromFile(String fileName) throws IOException, ClassNotFoundException {
-        ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
+        FileInputStream inputStream = new FileInputStream(fileName);
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
         list = (List<PhoneBookItem>)objectInputStream.readObject();
+        objectInputStream.close();
+        inputStream.close();
     }
 }
